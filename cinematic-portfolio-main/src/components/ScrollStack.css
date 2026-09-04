@@ -1,0 +1,114 @@
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.scroll-stack-inner {
+  position: relative;
+  width: 100%;
+  padding-top: 4vh;
+  padding-bottom: 50vh;
+
+  /*
+   * Creates enough vertical runway for the
+   * complete card stacking animation.
+   */
+  min-height: 100%;
+}
+
+.scroll-stack-card {
+  position: relative;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  /*
+   * Stacking happens from the top-center.
+   */
+  transform-origin: top center;
+
+  /*
+   * GPU acceleration.
+   */
+  will-change: transform, filter;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+
+  /*
+   * Prevent blurry rendering during transforms.
+   */
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+
+  /*
+   * Prevent accidental horizontal overflow
+   * caused by scale/rotation.
+   */
+  overflow: visible;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+
+  /*
+   * Invisible marker used by ScrollStack.tsx
+   * to determine when the stack should stop.
+   */
+  pointer-events: none;
+}
+
+/*
+ * -------------------------------------------------------
+ * INTERNAL SCROLL MODE
+ * -------------------------------------------------------
+ *
+ * Only applies when you use:
+ *
+ * <ScrollStack useWindowScroll={false}>
+ *
+ * The component itself becomes the scrolling container.
+ */
+.scroll-stack-scroller[data-scroll-mode='internal'] {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/*
+ * -------------------------------------------------------
+ * MOBILE
+ * -------------------------------------------------------
+ */
+@media (max-width: 768px) {
+  .scroll-stack-inner {
+    padding-top: 3vh;
+    padding-bottom: 40vh;
+  }
+
+  .scroll-stack-card {
+    width: 100%;
+  }
+}
+
+/*
+ * -------------------------------------------------------
+ * REDUCED MOTION
+ * -------------------------------------------------------
+ *
+ * Respects the user's accessibility preference.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-stack-card {
+    transition: none !important;
+    animation: none !important;
+  }
+}
